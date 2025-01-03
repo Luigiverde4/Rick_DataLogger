@@ -1,7 +1,8 @@
-const senseHat = (process.env.USER == "pi") 
-    ? require("node-sense-hat") 
-    : require("./node-sense-hat-emu");
+/*
 
+Este logger se va a convertir de ahora en adelante en uno para M5StackFire
+
+*/
 // Configuración
 const LOGFILE = "logfile.csv";
 

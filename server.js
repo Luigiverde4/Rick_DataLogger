@@ -13,8 +13,6 @@ const { Server } = require("socket.io");
 const fs = require("fs");
 
 
-const { logearDatos, inicializarArchivo, obtenerDatosSensores } = require("./public/js/logger");
-
 // Inicializar servidor y app
 const PORT = 8080;
 const app = express();
@@ -22,12 +20,27 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer); 
 
 // APLICACION
+
+// Middleware para procesar solicitudes JSON
+app.use(express.json());  // Asegúrate de tener esto para que req.body sea un objeto JSON
+
 // Mandar archivos a los clientes
 app.use(express.static(__dirname));
 
 // Mandar el index en específico cuando no se especifica ninguna ruta
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Ruta para recibir los datos IMU
+app.post("/datos_IMU", (req, res) => {
+    const datos = req.body;  // Los datos enviados por el cliente
+
+    // Guardar datos
+    console.log("Datos recibidos:", datos);
+
+    // Confirmar datos recibidos
+    res.status(200).send("Datos recibidos correctamente");
 });
 
 // CLIENTES
@@ -61,19 +74,6 @@ io.on("connection", (socket) => {
     // Guardar cambio de clientes
     guardarClientes();
 
-    // Configuración de los datos del cliente
-    socket.on("startLogging", () => {
-        console.log(`Iniciando registro de datos para cliente ${socket.id}`);
-        // Iniciar el registro de datos para este cliente
-        setInterval(async () => {
-            const datos = await obtenerDatosSensores();
-            if (datos) {
-                // Guardar los datos en el archivo CSV
-                logearDatos(datos);
-            }
-        }, 2000); // Intervalo de 2 segundos
-    });
-
     socket.on("disconnect", () => { 
         delete clientes.clientes[socket.id];
         console.log("---> Cliente desconectado", socket.id);
@@ -87,6 +87,3 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
-
-// Iniciar el archivo de log
-inicializarArchivo();
