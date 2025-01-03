@@ -11,19 +11,31 @@
     <div id="divClientes">
         <p id="estadoServer">Estado de la conexión: Desconectado</p>
     </div>
-
-    <div class="visualizador">
-        <div class="v_cliente">
-            <p>Cliente Prueba</p>
-            <div class = "control_grafica">
-                <button onclick="pausarGrafica()">Pausar</button>
-            </div>
-        </div>
-        <div class="v_datos">
-            <canvas class = "grafico" id="myChart" width="100%"></canvas>
-        </div>
-    </div>
-
+    
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-2">Datos</th>
+                    <th class="col-rest">Gráficos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-2">
+                    </td>
+                    <td class="col-rest">
+                        <canvas class = "grafico" id="myChart"></canvas>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-2">Contenido 3</td>
+                    <td class="col-rest">Contenido 4</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    
     <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
     <script src="/node_modules/chart.js/dist/chart.umd.js"></script>
     <script src="js/grafico.js"></script>

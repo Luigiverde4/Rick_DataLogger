@@ -4,20 +4,27 @@ h1 {
     justify-content: center;
 }
 
-.visualizador {
-    display: flex;
-    flex-direction: row;
+table {
+    width: 80%;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: center;
+}
+.col-2 {
+    width: 30%; /* 2/10 del ancho total */
+}
+.col-rest {
+    width: 70%; /* El resto del ancho */
 }
 
-.v_cliente {
-    flex:2;
+.grafico {
+    height: 100px;
 }
-
-.v_cliente p {
+main {
     display: flex;
-    align-items: center;
     justify-content: center;
-}
-.v_datos {
-    flex:8
+    align-items: center;
 }

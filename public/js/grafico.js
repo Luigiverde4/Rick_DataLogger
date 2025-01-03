@@ -35,39 +35,65 @@ class Grafico {
         });
     }
 
-    actualizarDatos(nuevaMedicion){
-        console.log(this.mediciones)
-        // Anadir la nueva medicion a la lista
-        if (this.mediciones.length < this.maxLength) {
-            this.mediciones.push(nuevaMedicion);
-        } else {
-            this.mediciones.shift(); // Sacar el mas viejo
-            this.mediciones.push(nuevaMedicion); // Anadir el nuevo
-        }
+    // actualizarDatos(nuevaMedicion){
+    //     console.log(this.mediciones)
+    //     // Anadir la nueva medicion a la lista
+    //     if (this.mediciones.length < this.maxLength) {
+    //         this.mediciones.push(nuevaMedicion);
+    //     } else {
+    //         this.mediciones.shift(); // Sacar el mas viejo
+    //         this.mediciones.push(nuevaMedicion); // Anadir el nuevo
+    //     }
 
+    //     // Actualizar eje X
+    //     this.datos_graficos.labels.push(this.cogerHoraMinutoSegundos());
+
+    //     // Actualizar eje Y
+    //     this.datos_graficos.datasets[0].data.push(nuevaMedicion);
+
+    //     // Limitar la longitud de los datos
+    //     if (this.datos_graficos.labels.length > this.maxLength) {
+    //         this.datos_graficos.labels.shift();
+    //         this.datos_graficos.datasets[0].data.shift();
+    //     }
+
+    //     // Aumentar el contador de muestras
+    //     this.contadorAcumulacion++;
+
+    //     // Cuando tengamos 3 muestras acumuladas, actualizamos el grafico
+    //     if (this.contadorAcumulacion >= this.cantMuestrasParaActualizar) {
+    //         this.myChart.update(); // Actualizar el grafico
+    //         this.contadorAcumulacion = 0; // Reiniciar el contador
+    //     }
+    // }
+
+
+
+    // Sacar hora minuto segundos para eje X
+
+    actualizarDatos(nuevaMedicion) {
+        // console.log(this.mediciones);
+    
+        // Añadir la nueva medición a la lista
+        this.mediciones.push(nuevaMedicion);
+    
         // Actualizar eje X
         this.datos_graficos.labels.push(this.cogerHoraMinutoSegundos());
-
+    
         // Actualizar eje Y
         this.datos_graficos.datasets[0].data.push(nuevaMedicion);
-
-        // Limitar la longitud de los datos
-        if (this.datos_graficos.labels.length > this.maxLength) {
-            this.datos_graficos.labels.shift();
-            this.datos_graficos.datasets[0].data.shift();
-        }
-
+    
         // Aumentar el contador de muestras
         this.contadorAcumulacion++;
-
-        // Cuando tengamos 3 muestras acumuladas, actualizamos el grafico
+    
+        // Cuando tengamos 3 muestras acumuladas, actualizamos el gráfico
         if (this.contadorAcumulacion >= this.cantMuestrasParaActualizar) {
-            this.myChart.update(); // Actualizar el grafico
+            this.myChart.update(); // Actualizar el gráfico
             this.contadorAcumulacion = 0; // Reiniciar el contador
         }
     }
+    
 
-    // Sacar hora minuto segundos para eje X
     cogerHoraMinutoSegundos() {
         let date = new Date();
         let hora = date.getHours();

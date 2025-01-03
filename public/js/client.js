@@ -18,12 +18,12 @@ sock.on("connect",(msj)=>{
     // Crear instancias de la clase Grafico para cada cliente
     grafico1 = new Grafico("myChart", sock.id);
     graficos.push(grafico1)
-    setInterval(() => {
-        // Generar nueva medición
-        let nuevaMedicion = parseInt(Math.random() * 100);
-        // Actualizar los gráficos de los clientes
-        grafico1.actualizarDatos(nuevaMedicion);
-    }, 1000); // Intervalo de 500ms para obtener muestras rápidamente
+    // setInterval(() => {
+    //     // Generar nueva medición
+    //     let nuevaMedicion = parseInt(Math.random() * 100);
+    //     // Actualizar los gráficos de los clientes
+    //     grafico1.actualizarDatos(nuevaMedicion);
+    // }, 100); // Intervalo de 500ms para obtener muestras rápidamente
     
 });
 
@@ -32,6 +32,14 @@ sock.on("disconnect",()=>{
     elementoEstado.textContent = "Estado de la conexion: Desconectado"
 });
 
+// Recibir datos del servidor
+sock.on("acelX", (dato) => {
+    console.log(dato)
+    // Actualizar todos los gráficos con el dato recibido
+    graficos.forEach((grafico) => {
+        grafico.actualizarDatos(dato);
+    });
+});
 
 function construyeVisualizadores(){
     console.log("construyeVisualizadores")

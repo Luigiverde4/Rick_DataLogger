@@ -19,6 +19,9 @@ const app = express();
 const httpServer = http.createServer(app); 
 const io = new Server(httpServer); 
 
+let datos = {}
+
+
 // APLICACION
 
 // Middleware para procesar solicitudes JSON
@@ -34,10 +37,9 @@ app.get('/', (req, res) => {
 
 // Ruta para recibir los datos IMU
 app.post("/datos_IMU", (req, res) => {
-    const datos = req.body;  // Los datos enviados por el cliente
+    datos = req.body;  // Los datos enviados por el cliente
 
     // Guardar datos
-    console.log("Datos recibidos:", datos);
 
     // Confirmar datos recibidos
     res.status(200).send("Datos recibidos correctamente");
@@ -65,7 +67,7 @@ function guardarClientes() {
     fs.writeFileSync(CLIENTS_FILE, JSON.stringify(clientes, null, 2), "utf8");
 }
 
-// Conexiones
+// Conexiones de clientes ( espectadores )
 io.on("connection", (socket) => { 
     const clientId = `cliente_${socket.id}`;
     clientes.clientes[socket.id] = clientId;
@@ -82,6 +84,17 @@ io.on("connection", (socket) => {
         guardarClientes();
     });
 });
+
+// Enviar datos a los clientes
+setInterval(() => {
+    if (Object.keys(datos || {}).length > 0) {
+        acelX = datos.aceleracion.x
+        io.emit("acelX", acelX); // Enviar los datos reales
+        // console.log("Datos enviados:", datos);
+    }
+},0); // Ajusta el intervalo si es necesario
+
+
 
 // Servidor HTTP
 httpServer.listen(PORT, () => {
