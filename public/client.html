@@ -2,15 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-     <title>Cliente</title>
+    <title>Cliente</title>
+    <link rel="stylesheet" href="/public/css/client.css">
+    <link rel="icon" type="image/x-icon" href="/public/img/GTDM.ico">
 </head>
 <body>
-    <h1>Hola Mundo!</h1>
+    <h1>Visualizador Datalogger</h1>
+    <div id="divClientes">
+        <p id="estadoServer">Estado de la conexión: Desconectado</p>
+    </div>
 
-    <p>Estado de la conexión:</p>
-    <p id="estadoServer">Desconectado</p>
+    <div class="visualizador">
+        <div class="v_cliente">
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        <div class="v_datos">
+
+        </div>
+    </div>
 
     <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
+    <script src="/node_modules/chart.js/dist/chart.umd.js"></script>
     <script src="js/client.js"></script>
 </body>
 </html>

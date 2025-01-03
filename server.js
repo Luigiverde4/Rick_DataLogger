@@ -42,5 +42,5 @@ io.on("connection", (socket) => {
 
 // Servidor HTTP
 httpServer.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}/public/client.html`);
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
