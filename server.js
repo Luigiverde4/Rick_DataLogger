@@ -12,7 +12,10 @@ const path = require("path");
 const { Server } = require("socket.io"); 
 const fs = require("fs");
 
-// Iniiciar servidores y app
+
+const { logearDatos, inicializarArchivo, obtenerDatosSensores } = require("./public/js/logger");
+
+// Inicializar servidor y app
 const PORT = 8080;
 const app = express();
 const httpServer = http.createServer(app); 
@@ -22,11 +25,10 @@ const io = new Server(httpServer);
 // Mandar archivos a los clientes
 app.use(express.static(__dirname));
 
-// Mandar el index en especifico cuando no se especifica ninguna ruta
+// Mandar el index en específico cuando no se especifica ninguna ruta
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-
 
 // CLIENTES
 // Ruta del archivo JSON
@@ -47,12 +49,10 @@ if (fs.existsSync(CLIENTS_FILE)) {
 
 // Guardar clientes en el archivo JSON
 function guardarClientes() {
-    // Guarda en el JSON el valor de clientes del JS, ya sea nuevo o quitado
     fs.writeFileSync(CLIENTS_FILE, JSON.stringify(clientes, null, 2), "utf8");
 }
 
-
-// CONEXIONES
+// Conexiones
 io.on("connection", (socket) => { 
     const clientId = `cliente_${socket.id}`;
     clientes.clientes[socket.id] = clientId;
@@ -60,6 +60,19 @@ io.on("connection", (socket) => {
 
     // Guardar cambio de clientes
     guardarClientes();
+
+    // Configuración de los datos del cliente
+    socket.on("startLogging", () => {
+        console.log(`Iniciando registro de datos para cliente ${socket.id}`);
+        // Iniciar el registro de datos para este cliente
+        setInterval(async () => {
+            const datos = await obtenerDatosSensores();
+            if (datos) {
+                // Guardar los datos en el archivo CSV
+                logearDatos(datos);
+            }
+        }, 2000); // Intervalo de 2 segundos
+    });
 
     socket.on("disconnect", () => { 
         delete clientes.clientes[socket.id];
@@ -74,3 +87,6 @@ io.on("connection", (socket) => {
 httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
+// Iniciar el archivo de log
+inicializarArchivo();
