@@ -132,3 +132,9 @@ async function logearDatos(){
         guardarDatosEnArchivo(datos)
     }
 }
+
+module.exports = {
+    inicializarArchivo,
+    obtenerDatosSensores,
+    logearDatos,
+};
