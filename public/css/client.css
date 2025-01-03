@@ -3,3 +3,21 @@ h1 {
     align-items: center;
     justify-content: center;
 }
+
+.visualizador {
+    display: flex;
+    flex-direction: row;
+}
+
+.v_cliente {
+    flex:2;
+}
+
+.v_cliente p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.v_datos {
+    flex:8
+}
