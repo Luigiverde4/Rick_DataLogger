@@ -37,28 +37,35 @@ app.get('/', (req, res) => {
 
 // Ruta para recibir los datos IMU
 app.post("/datos_IMU", (req, res) => {
-    datos = req.body;  // Los datos enviados por el cliente
-    mac = req.body.mac
-    if (!mac){
-        res.status(400).send("MANDAR MAC DEL SENSOR")
-    }
-
-    // Guardar el sensor en sensors.json
-    if (!sensores.sensores[mac]) {
-        // Si el sensor es nuevo, lo registramos
+    try{
+        datos = req.body;  // Los datos enviados por el cliente
+        mac = req.body.mac
+        numPck = req.body.id
+        if (!mac){
+            res.status(400).send("MANDAR MAC DEL SENSOR")
+        }
+    
+        // Guardar el sensor en sensors.json
         sensores.sensores[mac] = {
             id: mac,
-            num: Object.keys(sensores.sensores).length // TODO: Cant de pck?
+            num: numPck
         };
         guardarsensores()
-        io.emit("cant_sensores", Object.keys(sensores.sensores).length); // Enviar a todos las conexiones
+    
+        // Si el sensor es nuevo, lo avisamos
+        if (!sensores.sensores[mac]) {
+            io.emit("cant_sensores", Object.keys(sensores.sensores).length); // Enviar a todos las conexiones
+        }   
+        // Guardar datos
+        // TODO MAS TARDE
+    
+        // Confirmar datos recibidos
+        res.status(200).send("Datos recibidos correctamente");
+    } catch (error){
+        console.error("Error recibiendo en /datos_IMU: ",error)
+        res.status(500).send("Error interno en el servidor")
     }
 
-    // Guardar datos
-    // TODO MAS TARDE
-
-    // Confirmar datos recibidos
-    res.status(200).send("Datos recibidos correctamente");
 });
 
 // CLIENTES / ESPECTADORES
@@ -116,26 +123,17 @@ io.on("connection", (socket) => {
 });
 
 // Enviar datos a los clientes
+let ultPck; 
 setInterval(() => {
-    // TODO implementar id de paquete para no agregar siempre el mismo si se deja de conectar
-    // Si tenemos datos y clientes
-    if (Object.keys(datos || {}).length > 0 && clientes.length != 0) {
-        
-        acelX = datos.aceleracion.x
-        acelY = datos.aceleracion.y
-        px = datos.posicion.x
-        py = datos.posicion.y
-        limiteX = datos.limites.limiteX
-        limiteY = datos.limites.limiteY
-
-        io.emit("acelX", acelX); 
-        io.emit("acelY", acelY); 
-        
-        
-        // console.log("Datos enviados:", datos);
+    if (
+        Object.keys(datos || {}).length > 0 && // Tenemos datos
+        Object.keys(clientes.clientes).length > 0 && // Tenemos clientes
+        numPck !== ultPck                           // El paquete es nuevo
+    ) {
+        io.emit("datosIMU", datos) // Enviar datos a los clientes
+        ultPck = numPck
     }
-},100); // Ajusta el intervalo si es necesario
-
+}, 100);
 // Servidor HTTP
 httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);

@@ -32,18 +32,14 @@ sock.on("disconnect",()=>{
 
 // Recibir datos del servidor
 
+let i = 0
 // Sensores
-sock.on("acelX", (dato) => {
-    // console.log(dato)
-    // Actualizar todos los gráficos con el dato recibido
-    g_acelX.actualizarDatos(dato);    
-});
+sock.on("datosIMU",(datos)=>{    
+    g_acelX.actualizarDatos(datos.aceleracion.x);    
+    g_acelY.actualizarDatos(datos.aceleracion.y);    
+    
+})
 
-sock.on("acelY", (dato) => {
-    // console.log(dato)
-    // Actualizar todos los gráficos con el dato recibido
-    g_acelY.actualizarDatos(dato);    
-});
 
 // Otros datos
 sock.on("cant_clientes",(cant_clientes)=>{
@@ -55,6 +51,7 @@ sock.on("cant_sensores",(cant_sensores)=>{
     console.log("Cant_sensores",cant_sensores)
     elementoCantSensor.textContent = cant_sensores
 })
+
 function construyeVisualizadores(){
     console.log("construyeVisualizadores")
     let contenedor = document.createElement("div")

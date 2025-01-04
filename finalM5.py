@@ -1,13 +1,14 @@
 from m5stack import lcd, btnA, btnC, rgb, speaker
 import imu, utime
 import urequests
+import network
+
 
 lcd.font(lcd.FONT_DejaVu18)
 mpu = imu.IMU()
 
 # CONEXION SERVIDOR
 SERVER_URL = "http://127.0.0.1:8080/datos_IMU"  # Endpoint en el server
-
 
 # Esfera
 px = lcd.screensize()[0] // 2  # Que se ponga en el medio de la pantalla
@@ -29,6 +30,13 @@ ky = 120 / 0.7
 suavizados = [1, 0.9, 0.8, 0.7, 0.5, 0.3, 0.25, 0]
 suaivzado_index = 0
 
+
+idPck = 0 #id pck
+def getMacAddr():
+    wlan = network.WLAN(network.STA_IF)
+    mac = wlan.config('mac')
+    return ':'.join(['%02x' % b for b in mac])
+
 def enviar_datos(datos):
     """
     Envía datos al servidor a través de una solicitud POST.
@@ -36,6 +44,11 @@ def enviar_datos(datos):
     datos: diccionario con los datos del IMU
     """
     try:
+        global idPck
+        mac = getMacAddr()
+        datos["mac"] = mac
+        datos["id"] = idPck
+        idPck += 1
         headers = {'Content-Type': 'application/json'}  # El tipo de contenido que estamos enviando
         response = urequests.post(SERVER_URL, json=datos, headers=headers)
         if response.status_code == 200:
@@ -160,7 +173,7 @@ while True:
     limiteX_anterior = limiteX
     limiteY_anterior = limiteY
 
-    # **Enviar datos al servidor**
+    # Preprar datos IMU para enviar
     datos_imu = {
         "aceleracion": {
             "x": acelX,
