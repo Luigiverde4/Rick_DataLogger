@@ -1,11 +1,3 @@
 {
-  "clientes": {
-    "GALnkn5f9-urq-ZBAAAB": "cliente_GALnkn5f9-urq-ZBAAAB",
-    "agCQEIl0atdvw9nsAAAz": "cliente_agCQEIl0atdvw9nsAAAz",
-    "e0OXxqI_Xf49S2LJAAAF": "cliente_e0OXxqI_Xf49S2LJAAAF",
-    "DWRvdDK6LmTzwpBSAAAD": "cliente_DWRvdDK6LmTzwpBSAAAD",
-    "YfuDifQu0oPhl-qUAAAN": "cliente_YfuDifQu0oPhl-qUAAAN",
-    "C0m4K4z4Y-bz_G7RAAAD": "cliente_C0m4K4z4Y-bz_G7RAAAD",
-    "zhOL1_MjFTDLstEXAAAF": "cliente_zhOL1_MjFTDLstEXAAAF"
-  }
+  "clientes": {}
 }

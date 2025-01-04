@@ -12,20 +12,39 @@ class Grafico {
 
         this.id_cliente = sock_id
         // Datos y opciones del gráfico
+
+        // Linea
+        this.borderWidth = 3 // Grosor linea
+        this.borderColor = "rgb(140, 148, 212)"
+
+        // Bola
+        this.pointRadius = 1.5 // Radio punto
+        this.pointBorderWidth = 0 // Borde punto
+        this.tension = 1
+
         this.datos_graficos = {
             labels: [],
             datasets: [{
-                label: "Valores",
+                label: "AcelX",
                 data: [],
                 backgroundColor: ["rgb(202, 64, 29)"],
+                borderWidth : this.borderWidth,
+                borderColor : this.borderColor,
+                pointRadius : this.pointRadius,
+                pointBorderWidth : this.pointBorderWidth,
+                tension : this.tension
             }]
         };
 
         this.opciones_graficos = {
             scales: {
                 y: { beginAtZero: true },
+                x: {ticks:{
+                    maxTicksLimit: 10
+                }},
             }
         };
+
 
         // Creamos la instancia de Chart()
         this.myChart = new Chart(this.ctx, {
@@ -35,48 +54,18 @@ class Grafico {
         });
     }
 
-    // actualizarDatos(nuevaMedicion){
-    //     console.log(this.mediciones)
-    //     // Anadir la nueva medicion a la lista
-    //     if (this.mediciones.length < this.maxLength) {
-    //         this.mediciones.push(nuevaMedicion);
-    //     } else {
-    //         this.mediciones.shift(); // Sacar el mas viejo
-    //         this.mediciones.push(nuevaMedicion); // Anadir el nuevo
-    //     }
-
-    //     // Actualizar eje X
-    //     this.datos_graficos.labels.push(this.cogerHoraMinutoSegundos());
-
-    //     // Actualizar eje Y
-    //     this.datos_graficos.datasets[0].data.push(nuevaMedicion);
-
-    //     // Limitar la longitud de los datos
-    //     if (this.datos_graficos.labels.length > this.maxLength) {
-    //         this.datos_graficos.labels.shift();
-    //         this.datos_graficos.datasets[0].data.shift();
-    //     }
-
-    //     // Aumentar el contador de muestras
-    //     this.contadorAcumulacion++;
-
-    //     // Cuando tengamos 3 muestras acumuladas, actualizamos el grafico
-    //     if (this.contadorAcumulacion >= this.cantMuestrasParaActualizar) {
-    //         this.myChart.update(); // Actualizar el grafico
-    //         this.contadorAcumulacion = 0; // Reiniciar el contador
-    //     }
-    // }
-
-
-
-    // Sacar hora minuto segundos para eje X
-
     actualizarDatos(nuevaMedicion) {
         // console.log(this.mediciones);
+        if (this.mediciones.length >= 600) { // Cada minuto approx
+            this.mediciones = this.mediciones.slice(-100);
+            this.datos_graficos.labels = this.datos_graficos.labels.slice(-100); //  100 etiquetas mas recientes
+            this.datos_graficos.datasets[0].data = this.datos_graficos.datasets[0].data.slice(-100); // 100 datos mas recientes
     
+        }
+
         // Añadir la nueva medición a la lista
         this.mediciones.push(nuevaMedicion);
-    
+
         // Actualizar eje X
         this.datos_graficos.labels.push(this.cogerHoraMinutoSegundos());
     

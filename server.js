@@ -45,22 +45,19 @@ app.post("/datos_IMU", (req, res) => {
     res.status(200).send("Datos recibidos correctamente");
 });
 
-// CLIENTES
+// CLIENTES / ESPECTADORES
 // Ruta del archivo JSON
 const CLIENTS_FILE = path.join(__dirname, "public", "data", "clients.json");
 
-// Cargar clientes desde el archivo JSON
-let clientes = {};
-if (fs.existsSync(CLIENTS_FILE)) {
-    try {
-        clientes = JSON.parse(fs.readFileSync(CLIENTS_FILE, "utf8"));
-    } catch (err) {
-        console.error("Error leyendo el archivo JSON de clientes:");
-        clientes = { clientes: {} };
-    }
-} else {
-    clientes = { clientes: {} };
+// Iniciar y vaciar clientes al iniciar el server
+let clientes = { clientes: {} };
+try {
+    fs.writeFileSync(CLIENTS_FILE, JSON.stringify(clientes, null, 2), "utf8");
+    console.log("Archivo de clientes vaciado correctamente.");
+} catch (err) {
+    console.error("Error al vaciar el archivo JSON de clientes:", err);
 }
+
 
 // Guardar clientes en el archivo JSON
 function guardarClientes() {
@@ -87,12 +84,21 @@ io.on("connection", (socket) => {
 
 // Enviar datos a los clientes
 setInterval(() => {
-    if (Object.keys(datos || {}).length > 0) {
+    // Si tenemos datos y clientes
+    if (Object.keys(datos || {}).length > 0 && clientes.length != 0) {
+        
         acelX = datos.aceleracion.x
+        acelY = datos.aceleracion.x
+
         io.emit("acelX", acelX); // Enviar los datos reales
+        
+        acelY = datos.aceleracion.x
+        io.emit("acelY", acelY); // Enviar los datos reales
+        
+        
         // console.log("Datos enviados:", datos);
     }
-},0); // Ajusta el intervalo si es necesario
+},100); // Ajusta el intervalo si es necesario
 
 
 
