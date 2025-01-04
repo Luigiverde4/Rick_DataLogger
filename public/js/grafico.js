@@ -1,6 +1,6 @@
 class Grafico {
     // Constructor de clase
-    constructor(canvasId,sock_id) {
+    constructor(canvasId,titulo) {
         // Crear valores basicos del grafico
         this.ctx = document.getElementById(canvasId).getContext("2d");
         this.mediciones = []; // Mediciones que tendra 
@@ -10,9 +10,10 @@ class Grafico {
         this.cantMuestrasParaActualizar = 3;
         this.contadorAcumulacion = 0;
 
-        this.id_cliente = sock_id
         // Datos y opciones del gráfico
-
+        // Estetico
+        this.label = titulo
+        this.backgroundColor =  "rgb(202, 64, 29)"
         // Linea
         this.borderWidth = 3 // Grosor linea
         this.borderColor = "rgb(140, 148, 212)"
@@ -25,9 +26,9 @@ class Grafico {
         this.datos_graficos = {
             labels: [],
             datasets: [{
-                label: "AcelX",
+                label: this.label,
                 data: [],
-                backgroundColor: ["rgb(202, 64, 29)"],
+                backgroundColor: [this.backgroundColor],
                 borderWidth : this.borderWidth,
                 borderColor : this.borderColor,
                 pointRadius : this.pointRadius,
@@ -38,7 +39,11 @@ class Grafico {
 
         this.opciones_graficos = {
             scales: {
-                y: { beginAtZero: true },
+                y: { 
+                    beginAtZero: true,
+                    min: -1,
+                    max: 1
+                },
                 x: {ticks:{maxTicksLimit: 10}},
             }
         };

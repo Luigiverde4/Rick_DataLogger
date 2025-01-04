@@ -18,8 +18,8 @@ sock.on("connect",(msj)=>{
 
     // Generar grafico
     // Crear instancias de la clase Grafico para cada cliente
-    g_acelX = new Grafico("g_acelX", sock.id);
-    g_acelY = new Grafico("g_acelY", sock.id);
+    g_acelX = new Grafico("g_acelX", "Aceleración en eje X");
+    g_acelY = new Grafico("g_acelY", "Aceleración en eje Y");
     graficos.push(g_acelX)
     graficos.push(g_acelY)
 

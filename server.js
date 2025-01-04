@@ -134,6 +134,7 @@ setInterval(() => {
         ultPck = numPck
     }
 }, 100);
+
 // Servidor HTTP
 httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
