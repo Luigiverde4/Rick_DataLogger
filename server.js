@@ -88,11 +88,12 @@ setInterval(() => {
     if (Object.keys(datos || {}).length > 0 && clientes.length != 0) {
         
         acelX = datos.aceleracion.x
-        acelY = datos.aceleracion.x
-
+        acelY = datos.aceleracion.y
+        px = datos.posicion.x
+        py = datos.posicion.y
+        limiteX = datos.limites.limiteX
+        limiteY = datos.limites.limiteY
         io.emit("acelX", acelX); // Enviar los datos reales
-        
-        acelY = datos.aceleracion.x
         io.emit("acelY", acelY); // Enviar los datos reales
         
         
