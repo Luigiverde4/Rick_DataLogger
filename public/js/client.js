@@ -7,11 +7,13 @@ cliente
 
 const sock = io()
 elementoEstado = document.getElementById("estadoServer")
+elementoCantEspect = document.getElementById("cantEspect")
+elementoCantSensor = document.getElementById("cantSensores")
 graficos = []
 
 sock.on("connect",(msj)=>{
     console.log("Conectado al servidor")
-    elementoEstado.textContent = "Estado de la conexion: Conectado"
+    elementoEstado.textContent = "Conectado"
     console.log("Mensaje recibido\n",msj)
 
     // Generar grafico
@@ -25,10 +27,12 @@ sock.on("connect",(msj)=>{
 
 sock.on("disconnect",()=>{
     console.log("Desconectado del servidor")
-    elementoEstado.textContent = "Estado de la conexion: Desconectado"
+    elementoEstado.textContent = "Desconectado"
 });
 
 // Recibir datos del servidor
+
+// Sensores
 sock.on("acelX", (dato) => {
     // console.log(dato)
     // Actualizar todos los gráficos con el dato recibido
@@ -41,7 +45,16 @@ sock.on("acelY", (dato) => {
     g_acelY.actualizarDatos(dato);    
 });
 
+// Otros datos
+sock.on("cant_clientes",(cant_clientes)=>{
+    console.log("Cant_clientes",cant_clientes)
+    elementoCantEspect.textContent = cant_clientes
+});
 
+sock.on("cant_sensores",(cant_sensores)=>{
+    console.log("Cant_sensores",cant_sensores)
+    elementoCantSensor.textContent = cant_sensores
+})
 function construyeVisualizadores(){
     console.log("construyeVisualizadores")
     let contenedor = document.createElement("div")

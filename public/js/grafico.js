@@ -39,9 +39,7 @@ class Grafico {
         this.opciones_graficos = {
             scales: {
                 y: { beginAtZero: true },
-                x: {ticks:{
-                    maxTicksLimit: 10
-                }},
+                x: {ticks:{maxTicksLimit: 10}},
             }
         };
 

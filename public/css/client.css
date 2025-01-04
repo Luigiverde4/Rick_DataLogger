@@ -4,6 +4,21 @@ h1 {
     justify-content: center;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#divClientes {
+    position: fixed;
+    border: 5px solid black;
+    border-radius: 10px;
+    background-color: rgb(86, 166, 212,0.7);
+    padding: 10px;
+    width: 120px;
+}
+/*Tabla*/
 table {
     width: 80%;
     border-collapse: collapse;
@@ -20,11 +35,7 @@ th, td {
     width: 70%; /* El resto del ancho */
 }
 
+/*Graficos*/
 .grafico {
     height: 300px;
-}
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
