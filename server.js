@@ -12,6 +12,7 @@ const path = require("path");
 const { Server } = require("socket.io"); 
 const fs = require("fs");
 
+const { inicializarArchivo, guardarDatosEnArchivo, obtenerDatosDeAPI } = require("./modules/logger");
 
 // Inicializar servidor y app
 const PORT = 8080;
@@ -20,7 +21,7 @@ const httpServer = http.createServer(app);
 const io = new Server(httpServer); 
 
 let datos = {}
-
+let ultPck; 
 
 // APLICACION
 
@@ -36,37 +37,46 @@ app.get('/', (req, res) => {
 });
 
 // Ruta para recibir los datos IMU
-app.post("/datos_IMU", (req, res) => {
-    try{
-        datos = req.body;  // Los datos enviados por el cliente
-        mac = req.body.mac
-        numPck = req.body.id
-        if (!mac){
-            res.status(400).send("MANDAR MAC DEL SENSOR")
-        }
-    
-        // Guardar el sensor en sensors.json
-        sensores.sensores[mac] = {
-            id: mac,
-            num: numPck
-        };
-        guardarsensores()
-    
-        // Si el sensor es nuevo, lo avisamos
-        if (!sensores.sensores[mac]) {
-            io.emit("cant_sensores", Object.keys(sensores.sensores).length); // Enviar a todos las conexiones
-        }   
-        // Guardar datos
-        // TODO MAS TARDE
-    
-        // Confirmar datos recibidos
-        res.status(200).send("Datos recibidos correctamente");
-    } catch (error){
-        console.error("Error recibiendo en /datos_IMU: ",error)
-        res.status(500).send("Error interno en el servidor")
-    }
+app.post("/datos_IMU", async (req, res) => {
+    try {
+        const datos = await obtenerDatosDeAPI(req); // Obtener los datos procesados
 
+        const mac = datos.mac;
+        const numPck = datos.numPck;
+
+        // Si no hay MAC 
+        if (!mac) {
+            return res.status(400).send("MANDAR MAC DEL SENSOR"); // Validación de la MAC
+        }
+
+        // Guardar el sensor en el archivo JSON de sensores
+        if (!sensores.sensores[mac]) {
+            sensores.sensores[mac] = {
+                id: mac,
+                num: numPck
+            };
+            guardarsensores(); 
+
+            // Avisar del sensor nuevo
+            io.emit("cant_sensores", Object.keys(sensores.sensores).length);
+        } else {
+            // Si el sensor ya existe, actualizar el nº de paquete
+            sensores.sensores[mac].num = numPck;
+            guardarsensores(); // Guardar los sensores actualizados
+        }
+
+        // Guardar los datos en el CSV
+        await guardarDatosEnArchivo(datos);
+
+        // ACK al sensor
+        res.status(200).send("Datos recibidos correctamente");
+
+    } catch (error) {
+        console.error("Error al procesar los datos IMU:", error);
+        res.status(500).send("Error interno del servidor");
+    }
 });
+
 
 // CLIENTES / ESPECTADORES
 // Ruta del archivo JSON
@@ -123,7 +133,7 @@ io.on("connection", (socket) => {
 });
 
 // Enviar datos a los clientes
-let ultPck; 
+
 setInterval(() => {
     if (
         Object.keys(datos || {}).length > 0 && // Tenemos datos
@@ -139,3 +149,6 @@ setInterval(() => {
 httpServer.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
+// Iniciar logger 
+inicializarArchivo()

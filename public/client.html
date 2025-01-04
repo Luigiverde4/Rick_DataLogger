@@ -23,21 +23,48 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class = "acelX">
+                <tr class="acelX">
                     <td class="col-2">
+                        <div class="infoG">
+                            <div class="etiquetaG">Valor medio:</div>
+                            <div class="valor" id="valor_medio_x"></div>
+                        </div>
+                        <div class="infoG">
+                            <div class="etiquetaG">Máximo:</div>
+                            <div class="valor" id="valor_maximo_x"></div>
+                        </div>
+                        <div class="infoG">
+                            <div class="etiquetaG">Mínimo:</div>
+                            <div class="valor" id="valor_minimo_x"></div>
+                        </div>
                     </td>
                     <td class="col-rest">
-                        <canvas class = "grafico" id="g_acelX"></canvas>
+                        <canvas class="grafico" id="g_acelX"></canvas>
                     </td>
                 </tr>
-                <tr class = "acelY">
-                    <td class="col-2"></td>
+                <tr class="acelY">
+                    <td class="col-2">
+                        <div class="infoG">
+                            <div class="etiquetaG">Valor medio:</div>
+                            <div class="valor" id="valor_medio_y"></div>
+                        </div>
+                        <div class="infoG">
+                            <div class="etiquetaG">Máximo:</div>
+                            <div class="valor" id="valor_maximo_y"></div>
+                        </div>
+                        <div class="infoG">
+                            <div class="etiquetaG">Mínimo:</div>
+                            <div class="valor" id="valor_minimo_y"></div>
+                        </div>
+                    </td>
                     <td class="col-rest">
-                        <canvas class = "grafico" id="g_acelY"></canvas>
+                        <canvas class="grafico" id="g_acelY"></canvas>
                     </td>
                 </tr>
             </tbody>
         </table>
+        
+        
     </main>
     
     <script src="/node_modules/socket.io/client-dist/socket.io.js"></script>
