@@ -1,30 +1,38 @@
-const fs = require('fs');
-const LOGFILE = "logfile.csv";
+const fs = require("fs");
+const path = require("path");
 
-// Función para crear el archivo CSV con encabezados si no existe
+const LOGDIR = path.join("public", "logs");
+const LOGFILE = path.join(LOGDIR, "logfile.csv");
+
+// Función para inicializar el archivo de log
 async function inicializarArchivo() {
-    if (!fs.existsSync(LOGFILE)) {
-        const encabezado = [
-            "Fecha",
-            "Hora",
-            "MAC",
-            "num_pck",
-            "acc_x",
-            "acc_y",
-            "px",
-            "py",
-            "lim_x",
-            "lim_y"
-        ].join(";") + "\n";
+    // Asegúrate de que el directorio existe
+    if (!fs.existsSync(LOGDIR)) {
+        fs.mkdirSync(LOGDIR, { recursive: true });
+    }
 
-        try {
-            fs.writeFileSync(LOGFILE, encabezado);
-            console.log("Archivo de log creado con encabezado.");
-        } catch (err) {
-            console.error("Error al crear el archivo de log:", err.message);
-        }
+    // Crear un nuevo archivo con el encabezado
+    const encabezado = [
+        "Fecha",
+        "Hora",
+        "MAC",
+        "num_pck",
+        "acc_x",
+        "acc_y",
+        "px",
+        "py",
+        "lim_x",
+        "lim_y"
+    ].join(";") + "\n";
+
+    try {
+        fs.writeFileSync(LOGFILE, encabezado);
+        console.log("Archivo de log inicializado con encabezado.");
+    } catch (err) {
+        console.error("Error al crear el archivo de log:", err.message);
     }
 }
+
 
 // Coger los datos recibidos en el endpoint y convertirlos en un objeto
 async function obtenerDatosDeAPI(req) {
@@ -47,7 +55,7 @@ async function obtenerDatosDeAPI(req) {
         fecha: ddmmaa,
         hora: hhmmss,
         mac: data.mac ?? "N/A", // Si no hay MAC en los datos, ponemos "N/A"
-        numPck: data.numPck ?? "N/A", // Lo mismo para el número de paquete
+        numPck: data.id ?? "N/A", // Lo mismo para el número de paquete
         aceleracionX: data.aceleracion?.x?.toFixed(3) ?? "N/A",
         aceleracionY: data.aceleracion?.y?.toFixed(3) ?? "N/A",
         posicionX: data.posicion?.px?.toFixed(3) ?? "N/A",

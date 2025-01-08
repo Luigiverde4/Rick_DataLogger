@@ -35,8 +35,8 @@ sock.on("disconnect",()=>{
 let i = 0
 // Sensores
 sock.on("datosIMU",(datos)=>{    
-    g_acelX.actualizarDatos(datos.aceleracion.x);    
-    g_acelY.actualizarDatos(datos.aceleracion.y);    
+    g_acelX.actualizarDatos(datos.aceleracionX);    
+    g_acelY.actualizarDatos(datos.aceleracionY);    
     
 })
 

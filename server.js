@@ -39,10 +39,9 @@ app.get('/', (req, res) => {
 // Ruta para recibir los datos IMU
 app.post("/datos_IMU", async (req, res) => {
     try {
-        const datos = await obtenerDatosDeAPI(req); // Obtener los datos procesados
-
-        const mac = datos.mac;
-        const numPck = datos.numPck;
+        datos = await obtenerDatosDeAPI(req); // Obtener los datos procesados
+        mac = datos.mac;
+        numPck = datos.numPck;
 
         // Si no hay MAC 
         if (!mac) {
@@ -105,6 +104,7 @@ try {
 
 // Guardar clientes en el archivo JSON
 function guardarClientes() {
+    // TODO: Guardar hora de conexion 
     fs.writeFileSync(CLIENTS_FILE, JSON.stringify(clientes, null, 2), "utf8");
 }
 
@@ -136,9 +136,9 @@ io.on("connection", (socket) => {
 
 setInterval(() => {
     if (
-        Object.keys(datos || {}).length > 0 && // Tenemos datos
-        Object.keys(clientes.clientes).length > 0 && // Tenemos clientes
-        numPck !== ultPck                           // El paquete es nuevo
+        Object.keys(datos).length > 0 // Tenemos datos
+        && Object.keys(clientes.clientes).length > 0  // Tenemos clientes 
+        && numPck !== ultPck                           // El paquete es nuevo
     ) {
         io.emit("datosIMU", datos) // Enviar datos a los clientes
         ultPck = numPck
