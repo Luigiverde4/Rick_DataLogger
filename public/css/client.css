@@ -1,6 +1,6 @@
 /* General */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f9;
@@ -17,16 +17,34 @@ h1 {
     margin: 0;
 }
 
-/* Panel de clientes */
 #divClientes {
     position: fixed;
-    border: 3px solid #333;
-    border-radius: 8px;
-    background-color: rgba(86, 166, 212, 0.8);
-    padding: 15px;
-    width: 160px;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
+    width: 220px;
+    padding: 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(86, 166, 212, 0.8), rgba(43, 122, 184, 0.8));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    z-index: 10;
+    text-align: left;
+}
+
+#divClientes p {
+    margin-bottom: 10px;
+}
+
+#divClientes strong {
+    font-weight: bold;
+}
+
+#divClientes span {
+    display: block;
+    font-size: 16px;
+    margin-top: 5px;
 }
 
 main {
