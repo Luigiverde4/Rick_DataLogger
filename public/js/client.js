@@ -47,7 +47,9 @@ sock.on("datosIMU",(datos)=>{
     g_acelY.actualizarDatos(datos.aceleracionY);    
     px = datos.posicionX
     py = datos.posicionY
-    moverBola(px, py);
+    limiteX = datos.limiteX
+    limiteY = datos.limiteY
+    actualizarBola(px, py, limiteX, limiteY);
 })
 
 
@@ -65,7 +67,7 @@ sock.on("cant_sensores",(cant_sensores)=>{
 // Bola
 
 // Mover la bola
-function moverBola(x, y) {
+function actualizarBola(x, y,limiteX,limiteY) {
     // Limitar ejes
     x = Math.max(0, Math.min(320, x)); // Limitar X entre 0 y 320
     y = Math.max(0, Math.min(240, y)); // Limitar Y entre 0 y 240
@@ -77,7 +79,10 @@ function moverBola(x, y) {
     // Colocar la bola
     ball.style.left = `${ballX}px`;
     ball.style.top = `${ballY}px`;
-  }
+
+    let color = limiteX || limiteY ? "blue" : "red";
+    ball.style.backgroundColor = color;
+}
   
 
 function construyeVisualizadores(){
