@@ -1,9 +1,4 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* General */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: #f4f4f4;
@@ -30,6 +25,18 @@ h1 {
     margin-bottom: 20px;
 }
 
+h2 {
+    font-size: 1.8rem;
+    margin-top: 20px;
+    color: #333;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
 .button {
     display: inline-block;
     padding: 10px 20px;
@@ -45,6 +52,13 @@ h1 {
     background-color: #1976D2;
 }
 
+/* Estilo para la sección informativa */
+.info-section {
+    text-align: left;
+    margin-top: 30px;
+}
+
+/* Responsive Design */
 @media (max-width: 600px) {
     h1 {
         font-size: 2rem;
