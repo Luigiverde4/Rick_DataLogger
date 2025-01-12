@@ -11,6 +11,14 @@ elementoCantEspect = document.getElementById("cantEspect")
 elementoCantSensor = document.getElementById("cantSensores")
 graficos = []
 
+ball = document.getElementById('ball');
+plane = document.getElementById('cartesian-plane');
+
+// Calcular el centro del plano (0,0)
+const planeRect = plane.getBoundingClientRect();
+const centerX = planeRect.width / 2;
+const centerY = planeRect.height / 2;
+
 sock.on("connect",(msj)=>{
     console.log("Conectado al servidor")
     elementoEstado.textContent = "Conectado"
@@ -37,7 +45,9 @@ let i = 0
 sock.on("datosIMU",(datos)=>{    
     g_acelX.actualizarDatos(datos.aceleracionX);    
     g_acelY.actualizarDatos(datos.aceleracionY);    
-    
+    px = datos.posicionX
+    py = datos.posicionY
+    moverBola(px, py);
 })
 
 
@@ -51,6 +61,24 @@ sock.on("cant_sensores",(cant_sensores)=>{
     console.log("Cant_sensores",cant_sensores)
     elementoCantSensor.textContent = cant_sensores
 })
+
+// Bola
+
+// Mover la bola
+function moverBola(x, y) {
+    // Limitar ejes
+    x = Math.max(0, Math.min(320, x)); // Limitar X entre 0 y 320
+    y = Math.max(0, Math.min(240, y)); // Limitar Y entre 0 y 240
+  
+    // Calcular pos de la bola en el plano
+    const ballX = centerX + (x - 160) - ball.offsetWidth; // Ajustar al rango [0, 320]
+    const ballY = centerY + (y - 120) - ball.offsetHeight; // Ajustar al rango [0, 240]
+  
+    // Colocar la bola
+    ball.style.left = `${ballX}px`;
+    ball.style.top = `${ballY}px`;
+  }
+  
 
 function construyeVisualizadores(){
     console.log("construyeVisualizadores")

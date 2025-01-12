@@ -1,7 +1,7 @@
 from m5stack import lcd, btnA, btnC, rgb, speaker
 import imu, utime
 import urequests
-import network
+import network   
 
 
 lcd.font(lcd.FONT_DejaVu18)
@@ -49,7 +49,6 @@ def enviar_datos(datos):
         datos["mac"] = mac
         datos["id"] = idPck
         idPck += 1
-        # print(datos["id"])
         headers = {'Content-Type': 'application/json'}  # El tipo de contenido que estamos enviando
         response = urequests.post(SERVER_URL, json=datos, headers=headers)
         if response.status_code == 200:

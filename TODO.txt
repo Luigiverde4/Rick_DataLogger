@@ -1,3 +1,2 @@
 1. Boton de pausa
-2. .csv de log
-3. Valor medio, max etc
+2. Valor medio, max etc

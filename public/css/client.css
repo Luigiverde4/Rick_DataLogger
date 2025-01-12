@@ -106,3 +106,27 @@ th {
         width: 100%;
     }
 }
+
+
+#cartesian-plane {
+  position: relative;
+  width: 320px; 
+  height: 240px; 
+  border: 2px solid black; 
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*Bordes de los ejes */
+  background: linear-gradient(to right, transparent 49.5%, black 50%, transparent 50.5%),
+              linear-gradient(to top, transparent 49.5%, black 50%, transparent 50.5%);
+  background-size: 100% 100%;
+}
+
+#ball {
+  position: absolute;
+  width: 20px; /* diametro bola  */
+  height: 20px; /* diametro bola */
+  background-color: red; 
+  border-radius: 50%;
+}
