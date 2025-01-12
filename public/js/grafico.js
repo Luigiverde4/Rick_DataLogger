@@ -11,6 +11,10 @@ class Grafico {
         this.contadorAcumulacion = 0;
 
         // Datos y opciones del gráfico
+
+        // Datos
+        this.data = []
+
         // Estetico
         this.label = titulo
         this.backgroundColor =  "rgb(202, 64, 29)"
@@ -27,7 +31,7 @@ class Grafico {
             labels: [],
             datasets: [{
                 label: this.label,
-                data: [],
+                data: this.data,
                 backgroundColor: [this.backgroundColor],
                 borderWidth : this.borderWidth,
                 borderColor : this.borderColor,
@@ -84,7 +88,6 @@ class Grafico {
             this.contadorAcumulacion = 0; // Reiniciar el contador
         }
     }
-    
 
     cogerHoraMinutoSegundos() {
         let date = new Date();
@@ -94,7 +97,3 @@ class Grafico {
         return `${hora}:${minutos}:${segundos}`;
     }
 }
-    
-
-
-

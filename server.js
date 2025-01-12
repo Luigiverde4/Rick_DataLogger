@@ -12,7 +12,7 @@ const path = require("path");
 const { Server } = require("socket.io"); 
 const fs = require("fs");
 
-const { inicializarArchivo, guardarDatosEnArchivo, obtenerDatosDeAPI } = require("./modules/logger");
+const { inicializarArchivo, guardarDatosEnArchivo, obtenerDatosDeAPI, cargarDatosGrafica } = require("./modules/logger");
 
 // Inicializar servidor y app
 const PORT = 8080;
@@ -123,6 +123,12 @@ io.on("connection", (socket) => {
     guardarClientes();
     io.emit("cant_clientes", Object.keys(clientes.clientes).length); // Enviar a todos las conexiones
     
+    let valores_x, valores_y;
+    // Mandar ultimas 100 muestras a las graficas
+    [valores_x, valores_y] = cargarDatosGrafica();
+    socket.emit("valoresIniciales",{valores_x,valores_y})
+
+
     socket.on("disconnect", () => { 
         delete clientes.clientes[socket.id];
         io.emit("cant_clientes", Object.keys(clientes.clientes).length); // Enviar a todos las conexiones

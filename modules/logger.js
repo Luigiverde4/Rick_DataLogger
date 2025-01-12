@@ -93,8 +93,39 @@ async function guardarDatosEnArchivo(datos,numPck) {
     }
 }
 
+function cargarDatosGrafica(){
+    contenidoCSV = fs.readFileSync(LOGFILE,'utf8')
+    lineas = contenidoCSV.trim().split("\n")
+
+    valores_x = []
+    valores_y = []
+
+    if (lineas.length -1 >= 100){
+        // Cogemos las ultimas 100 muestras
+        ultimasLineas = lineas.slice(-100); 
+
+        for (let linea of ultimasLineas) {
+            const columnas = linea.split(';');
+            valores_x.push(parseFloat(columnas[4])); // acc_x
+            valores_y.push(parseFloat(columnas[5])); // acc_y
+        }
+    }else if (lineas.length -1 == 0){
+        inicializarArchivo()
+    }else{
+        // Coger las que puedas
+        todasLasLineas = lineas.slice(1); // Ignorar la cabecera
+        for (let linea of todasLasLineas) {
+            columnas = linea.split(';');
+            valores_x.push(parseFloat(columnas[4])); // acc_x
+            valores_y.push(parseFloat(columnas[5])); // acc_y
+        }
+    }
+    return [valores_x,valores_y]
+}
+
 module.exports = {
-    inicializarArchivo,
+inicializarArchivo,
     guardarDatosEnArchivo,
-    obtenerDatosDeAPI
+    obtenerDatosDeAPI,
+    cargarDatosGrafica
 };

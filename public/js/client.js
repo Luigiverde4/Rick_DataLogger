@@ -30,6 +30,21 @@ sock.on("connect", (msj) => {
     g_acelY = new Grafico("g_acelY", "Aceleración en eje Y");
     graficos.push(g_acelX);
     graficos.push(g_acelY);
+
+
+    sock.on("valoresIniciales", ({ valores_x, valores_y }) => {
+        console.log("Valores iniciales recibidos:", valores_y);
+
+        // Actualizar datos de los gráficos
+        for (let valor of valores_x) {
+            g_acelX.actualizarDatos(valor);
+        }
+
+        for (let valor of valores_y) {
+            g_acelY.actualizarDatos(valor);
+        }
+    });
+
 });
 
 sock.on("disconnect", () => {
@@ -64,7 +79,7 @@ sock.on("cant_sensores", (cant_sensores) => {
     elementoCantSensor.textContent = cant_sensores;
 });
 
-// Función para mover la bola en el plano cartesiano
+// Actualizar la bola (pos y color)
 function actualizarBola(x, y, limiteX, limiteY) {
     // Limitar los valores de X y Y dentro del plano
     x = Math.max(0, Math.min(320, x)); // Limitar X entre 0 y 320
@@ -83,8 +98,3 @@ function actualizarBola(x, y, limiteX, limiteY) {
     ball.style.backgroundColor = color;
 }
 
-function construyeVisualizadores() {
-    console.log("construyeVisualizadores");
-    let contenedor = document.createElement("div");
-    contenedor.class = "contenedor";
-}
