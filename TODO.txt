@@ -1,2 +1,0 @@
-1. Boton de pausa
-2. Valor medio, max etc

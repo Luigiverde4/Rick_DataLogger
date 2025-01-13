@@ -50,6 +50,7 @@ app.post("/datos_IMU", async (req, res) => {
 
         // Guardar el sensor en el archivo JSON de sensores
         if (!sensores.sensores[mac]) {
+            console.log("1")
             sensores.sensores[mac] = {
                 id: mac,
                 num: numPck
@@ -127,6 +128,7 @@ io.on("connection", (socket) => {
     // Mandar ultimas 100 muestras a las graficas
     [valores_x, valores_y] = cargarDatosGrafica();
     socket.emit("valoresIniciales",{valores_x,valores_y})
+    io.emit("cant_sensores", Object.keys(sensores.sensores).length);
 
 
     socket.on("disconnect", () => { 
