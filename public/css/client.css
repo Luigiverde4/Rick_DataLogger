@@ -131,3 +131,51 @@ th {
         width: 100%;
     }
 }
+
+/* Estilos para valores */
+.infoG {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f9f9fc;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.infoG:hover {
+    background-color: #eef7ff;
+}
+
+.icon {
+    font-size: 18px;
+    margin-right: 10px;
+    color: #2196F3;
+}
+
+.etiquetaG {
+    font-weight: bold;
+    color: #555;
+    flex: 1;
+}
+
+.valor {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Valores calculados */
+#valor_medio_x, #valor_medio_y {
+    color: #ff9800; 
+    
+}
+
+#valor_maximo_x, #valor_maximo_y {
+    color: #4caf50; 
+}
+
+#valor_minimo_x, #valor_minimo_y {
+    color: #e53935; 
+}
